@@ -1,8 +1,16 @@
 import os
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import (
+    Application,
+    ApplicationBuilder,
+    CommandHandler,
+    MessageHandler,
+    ContextTypes,
+    filters,
+)
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from database import add_task, get_tasks, mark_done
+
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
@@ -15,7 +23,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/start_reminders - Start reminders"
     )
 
-app = ApplicationBuilder().token(BOT_TOKEN).build()
+app = Application.builder().token(BOT_TOKEN).build()
 app.add_handler(CommandHandler("start", start))
 
 scheduler = AsyncIOScheduler()
